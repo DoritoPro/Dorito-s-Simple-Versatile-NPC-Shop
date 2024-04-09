@@ -20,7 +20,6 @@ INSTALLATION INSTRUCTIONS:
 COMMANDS FOR NPC DATA SAVING(IN CONSOLE):
 
 sshopnpc - Saves the NPC Permanently to Server so That You Do Not Have to Spawm it in After Every Restart
-
 rshopnpc - Removes The NPC From the Game and Any Asscoated Data Files to Prevent it From Spawning in Next Server Restart
 ------------------------------------------------------------------------------------
 
