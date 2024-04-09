@@ -3,8 +3,6 @@ GREETINGS!!
 THIS IS MY FOURTH ADDON EVER, SO BE NICE.
 IF YOU COME ACROSS ANY ISSUES FEEL FREE TO LET ME KNOW
 IF YOU SEE ANY REDUNDANT CODE OR WAYS OF MAKING THINGS MORE FLUID, CONTACT ME. I STILL DON'T KNOW HOW I FINISHED THIS
-CONTACT ME THROUG STEAM: https://steamcommunity.com/profiles/76561198275723743/
-
 ---------------------------------------------------------------------------------
 INSTALLATION INSTRUCTIONS:
 
@@ -18,8 +16,8 @@ INSTALLATION INSTRUCTIONS:
 COMMANDS FOR NPC DATA SAVING(IN CONSOLE):
 
 sshopnpc - Saves the NPC Permanently to Server so That You Do Not Have to Spawm it in After Every Restart
+rshopnpc - Removes the NPC from the Current Session and Any Assocaited Data Files to Prevent in From Spawning in Next Server Restart
 
-rshopnpc - Removes The NPC From the Game and Any Asscoated Data Files to Prevent it From Spawning in Next Server Restart
 ------------------------------------------------------------------------------------
 
 A Few Basic Features Include: 
@@ -41,3 +39,7 @@ Commands (In Console)
 - sshopnpc (Saves NPC location and loads in the NPC in that location upon server restarts)
 - rshopnpc (Removes all NPCs from current session and permanently removed their data file.)
 - wep_model (Grabs current weapon model held in hand and pastes the model in console to make it easier to include the model when creating a new item within the config file) the model when creating a new item within the config file)
+
+-----------------------------------------------------------------------------------------
+
+DO NOT REUPLOAD THIS IN ANYWAY EDITED OR UNEDITED!
