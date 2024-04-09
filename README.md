@@ -1,5 +1,3 @@
-Dorito's Simple Versatile NPC Shop © 2024 by Dorito is licensed under Attribution-NonCommercial-NoDerivatives 4.0 International 
-
 GREETINGS!!
 
 THIS IS MY FOURTH ADDON EVER, SO BE NICE.
