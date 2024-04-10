@@ -30,8 +30,8 @@ A Few Basic Features Include:
 
 SHOUTOUTS:
 -The Wiki
--CHATGPT - Helped Me Debug and With Some Math to Help Organize It a Bit (Still a Bit of A Mess)
--Youtube -Tutorials Were a Big Help for Setting things Up
+-CHATGPT - Helped Me Debug and Helped Organize It a Bit (Still a Bit of A Mess)
+-Youtube - Tutorials Were a Big Help for Setting things Up
 
 -----------------------------------------------------------------------------------------
 
