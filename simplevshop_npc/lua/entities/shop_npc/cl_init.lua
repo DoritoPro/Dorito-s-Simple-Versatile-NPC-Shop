@@ -200,7 +200,6 @@ hook.Add("EntityRemoved", "NPCShopEntityRemoved", function(ent)
     end
 end)
 
--- Clean up function to reset interaction flag when the entity is removed
 function ENT:OnRemove()
     interacting = false -- Reset interaction flag
     entReference = nil -- Reset the entity reference
@@ -208,13 +207,13 @@ end
 
 hook.Add("PostDrawOpaqueRenderables", "DrawShopNPCName", function()
     for _, ent in ipairs(ents.FindByClass("shop_npc")) do
-        local pos = ent:GetPos() + Vector(0, 0, 80) -- Adjust the offset as needed
+        local pos = ent:GetPos() + Vector(0, 0, 80) 
         local ang = LocalPlayer():EyeAngles()
         ang:RotateAroundAxis(ang:Forward(), 90)
         ang:RotateAroundAxis(ang:Right(), 90)
-        local iconSize = 100 -- Adjust the size of the icon
+        local iconSize = 100 -
         local textOffset = iconSize / 2 + 10 -- Adjust the offset between icon and text
-        cam.Start3D2D(pos, Angle(0, ang.y, 90), 0.1) -- Adjust the scale as needed
+        cam.Start3D2D(pos, Angle(0, ang.y, 90), 0.1) 
             draw.SimpleTextOutlined((SIMPLESERVERSHOP.Theme["NPCSHOPNAME"]), "statnpc_55", 0, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color(0, 0, 0))
         cam.End3D2D()
     end
