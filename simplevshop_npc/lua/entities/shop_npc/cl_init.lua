@@ -98,7 +98,7 @@ local function CreateStatNPCPanel()
     statdpanelbutton.Paint = function(self, w, h)
         draw.RoundedBox(10, 0, 0, w, h, Color(0, 132, 255)) -- Button background color
     end
-    statdpanelbutton:SetTextColor(Color(255, 255, 255)) -- Set the text color to white
+    statdpanelbutton:SetTextColor(Color(255, 255, 255)) 
     statdpanelbutton.DoClick = function(self)
         statpanel:Remove()
     end
@@ -131,7 +131,7 @@ local function CreateStatNPCPanel()
         end
 
         local icon = vgui.Create("DModelPanel", itemPanel)
-        icon:SetWide(110) -- Adjust width as needed
+        icon:SetWide(110) 
         icon:SetTall(100)
         icon:SetModel(itemData.model)
         icon:SetFOV(50)
@@ -200,7 +200,6 @@ hook.Add("EntityRemoved", "NPCStatEntityRemoved", function(ent)
     end
 end)
 
--- Clean up function to reset interaction flag when the entity is removed
 function ENT:OnRemove()
     interacting = false -- Reset interaction flag
     entReference = nil -- Reset the entity reference
@@ -208,13 +207,13 @@ end
 
 hook.Add("PostDrawOpaqueRenderables", "DrawStatNPCName", function()
     for _, ent in ipairs(ents.FindByClass("shop_npc")) do
-        local pos = ent:GetPos() + Vector(0, 0, 80) -- Adjust the offset as needed
+        local pos = ent:GetPos() + Vector(0, 0, 80) 
         local ang = LocalPlayer():EyeAngles()
         ang:RotateAroundAxis(ang:Forward(), 90)
         ang:RotateAroundAxis(ang:Right(), 90)
-        local iconSize = 100 -- Adjust the size of the icon
-        local textOffset = iconSize / 2 + 10 -- Adjust the offset between icon and text
-        cam.Start3D2D(pos, Angle(0, ang.y, 90), 0.1) -- Adjust the scale as needed
+        local iconSize = 100 
+        local textOffset = iconSize / 2 + 10 
+        cam.Start3D2D(pos, Angle(0, ang.y, 90), 0.1)
             draw.SimpleTextOutlined((SIMPLESERVERSHOP.Theme["NPCSHOPNAME"]), "statnpc_55", 0, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color(0, 0, 0))
         cam.End3D2D()
     end
