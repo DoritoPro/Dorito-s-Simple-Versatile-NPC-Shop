@@ -48,16 +48,16 @@ ENT.RenderGroup = RENDERGROUP_OPAQUE
 local interacting = false -- Flag to track if interaction is currently happening
 
 local function CreateShopNPCPanel()
-    local shoppanel = vgui.Create("DFrame")
-    shoppanel:SetSize(450, 550)
-    shoppanel:SetPos(ScrW() / 2 - 225 , ScrH() / 2 - 325)
-    shoppanel:MakePopup()
-    shoppanel:SetDraggable(false)
-    shoppanel.Paint = function(self, w, h)
+    local statpanel = vgui.Create("DFrame")
+    statpanel:SetSize(450, 550)
+    statpanel:SetPos(ScrW() / 2 - 225 , ScrH() / 2 - 325)
+    statpanel:MakePopup()
+    statpanel:SetDraggable(false)
+    statpanel.Paint = function(self, w, h)
         draw.RoundedBox(10, 0, 0, w, h, Color(30, 30, 30))
     end
     
-    local scroll = vgui.Create("DScrollPanel", shoppanel)
+    local scroll = vgui.Create("DScrollPanel", statpanel)
     scroll:Dock(FILL)
     
     local vBar = scroll:GetVBar()
@@ -74,43 +74,43 @@ local function CreateShopNPCPanel()
 
 
     local headerHeight = 40
-    local shopheader = vgui.Create("DPanel", shoppanel)
-    shopheader:SetSize(shoppanel:GetWide(), 40)
-    shopheader:SetPos(0, 0)
-    shopheader.Paint = function(self, w, h)
+    local statheader = vgui.Create("DPanel", statpanel)
+    statheader:SetSize(statpanel:GetWide(), 40)
+    statheader:SetPos(0, 0)
+    statheader.Paint = function(self, w, h)
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 132, 255))
         draw.SimpleText((SIMPLESERVERSHOP.Theme["NPCSHOPNAME"]), "statnpc_30", 10, h / 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
-    local headeroutline = vgui.Create("DPanel", shoppanel)
-    headeroutline:SetSize(shoppanel:GetWide(), 1)
+    local headeroutline = vgui.Create("DPanel", statpanel)
+    headeroutline:SetSize(statpanel:GetWide(), 1)
     headeroutline:SetPos(0, 40)
     headeroutline.Paint = function(self, w, h)
         draw.RoundedBox(2, 0, 0, w, h, Color(255, 255, 255, 100))
     end
 
     
-    local statdpanelbutton = vgui.Create("DButton", shopheader)
+    local statdpanelbutton = vgui.Create("DButton", statheader)
     statdpanelbutton:SetText("X")
     statdpanelbutton:SetFont("statnpc_30")
     statdpanelbutton:SetSize(50, 30)
-    statdpanelbutton:SetPos(shopheader:GetWide() - statdpanelbutton:GetWide() - 5, (shopheader:GetTall() - statdpanelbutton:GetTall()) / 2)
+    statdpanelbutton:SetPos(statheader:GetWide() - statdpanelbutton:GetWide() - 5, (statheader:GetTall() - statdpanelbutton:GetTall()) / 2)
     statdpanelbutton.Paint = function(self, w, h)
         draw.RoundedBox(10, 0, 0, w, h, Color(0, 132, 255)) -- Button background color
     end
     statdpanelbutton:SetTextColor(Color(255, 255, 255)) -- Set the text color to white
     statdpanelbutton.DoClick = function(self)
-        shoppanel:Remove()
+        statpanel:Remove()
     end
     
 
-    local shopheight = shoppanel:GetTall()
+    local shopheight = statpanel:GetTall()
     local margin = 15
-    local availableHeight = shoppanel:GetTall() - headerHeight - margin * 26.5 - shopheader:GetTall()
+    local availableHeight = statpanel:GetTall() - headerHeight - margin * 26.5 - statheader:GetTall()
     local yspace = shopheight * 0.008
     for k, itemData in pairs (SIMPLESERVERSHOP.Items) do
         local itemPanel = vgui.Create("DPanel", scroll)
-        itemPanel:SetSize(shoppanel:GetWide() - 30, availableHeight)
+        itemPanel:SetSize(statpanel:GetWide() - 30, availableHeight)
         itemPanel:DockMargin(10, 25, 10, yspace)
         itemPanel:SetTall(shopheight * 0.115)
         itemPanel:Dock(TOP)
@@ -171,23 +171,23 @@ end
 local interactingNPCs = {} -- Table to track interacting NPCs
 
 function ENT:Interact(player)
-    if not interacting then -- Check if interaction is already happening
-        interacting = true -- Set flag to indicate interaction started
-        CreateShopNPCPanel() -- Call the function to create the bail NPC panel
-        -- Reset the interaction flag after a short delay
+    if not interacting then 
+        interacting = true 
+        CreateShopNPCPanel() 
         timer.Simple(1.5, function()
             interacting = false
         end)
     end
 end
 
--- Hook into player key presses
 hook.Add("KeyPress", "NPCShopInteractionKeyPress", function(ply, key)
     if key == IN_USE then
         local trace = ply:GetEyeTrace()
-        if IsValid(trace.Entity) and trace.Entity:IsNPC() then
-            if interactingNPCs[trace.Entity] == nil then
-                trace.Entity:Interact(ply) -- Call Interact function of the NPC entity
+        local entity = trace.Entity
+        if IsValid(entity) and isfunction(entity.Interact) then
+            if entity:IsNPC() and not interactingNPCs[entity] then
+                entity:Interact(ply)
+                interactingNPCs[entity] = true
             end
         end
     end
@@ -200,20 +200,21 @@ hook.Add("EntityRemoved", "NPCShopEntityRemoved", function(ent)
     end
 end)
 
+-- Clean up function to reset interaction flag when the entity is removed
 function ENT:OnRemove()
-    interacting = false -- Reset interaction flag
-    entReference = nil -- Reset the entity reference
+    interacting = false 
+    entReference = nil 
 end
 
 hook.Add("PostDrawOpaqueRenderables", "DrawShopNPCName", function()
     for _, ent in ipairs(ents.FindByClass("shop_npc")) do
-        local pos = ent:GetPos() + Vector(0, 0, 80) 
+        local pos = ent:GetPos() + Vector(0, 0, 80) -- Adjust the offset as needed
         local ang = LocalPlayer():EyeAngles()
         ang:RotateAroundAxis(ang:Forward(), 90)
         ang:RotateAroundAxis(ang:Right(), 90)
-        local iconSize = 100 -
+        local iconSize = 100 -- Adjust the size of the icon
         local textOffset = iconSize / 2 + 10 -- Adjust the offset between icon and text
-        cam.Start3D2D(pos, Angle(0, ang.y, 90), 0.1) 
+        cam.Start3D2D(pos, Angle(0, ang.y, 90), 0.1) -- Adjust the scale as needed
             draw.SimpleTextOutlined((SIMPLESERVERSHOP.Theme["NPCSHOPNAME"]), "statnpc_55", 0, 0, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, Color(0, 0, 0))
         cam.End3D2D()
     end
